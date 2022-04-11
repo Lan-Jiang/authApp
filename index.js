@@ -72,7 +72,39 @@ app.post('/login', (req, res, next) => {
     }) (req, res, next);
 });
 
+app.get("/login", 
+    (req, res) => res.sendFile("html/login.html", 
+    { root: __dirname })
+);
 
+app.get("/", 
+    connectEnsureLogin.ensureLoggedIn(), 
+    (req, res) => res.sendFile("html/index.html", { root: __dirname })
+);
+
+app.get("/private", 
+    connectEnsureLogin.ensureLoggedIn(), 
+    (req, res) => res.sendFile("html/private.html", { root: __dirname })
+);
+
+app.get("/user", 
+    connectEnsureLogin.ensureLoggedIn(), 
+    (req, res) => res.send({ user: req.user })
+);
+
+app.get("/logout", 
+    (req, res) => {
+        req.logout(), 
+        res.sendFile("html/logout.html", 
+        { root: __dirname }
+        );
+});
+
+
+/* Register Some Users */
+// UserDetails.register({username:'paul', active: false}, 'paul');
+// UserDetails.register({username:'joy', active: false}, 'joy');
+// UserDetails.register({username:'ray', active: false}, 'ray');
 
 
 
